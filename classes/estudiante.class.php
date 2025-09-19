@@ -2,7 +2,7 @@
 require("classes/conn.class.php");
 require("classes/validaciones.inc.php");
 
-class estudiante{
+class Estudiante{
     public $idestudiante;
     public $fechanacimiento;
     public $estadoregistroestudiante;

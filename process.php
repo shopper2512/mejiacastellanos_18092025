@@ -2,8 +2,8 @@
 require("classes/estudiante.class.php");
 $Estudiante = new Estudiante();
 
-$resultado = $Estudiante->obtenerEstudiante();
+$resultado = $Estudiante->obtenerEstudiantes();
 
-header("contect - type : Application/json");
+header("Contect-Type: Application/json");
 echo(json_encode($resultado));
 ?>
