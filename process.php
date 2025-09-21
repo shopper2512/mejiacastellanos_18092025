@@ -4,6 +4,8 @@ $Estudiante = new Estudiante();
 
 $resultado = $Estudiante->obtenerEstudiantes();
 
-header("Contect-Type: Application/json");
+
+header("Content-Type: Application/json");
 echo(json_encode($resultado));
+
 ?>
