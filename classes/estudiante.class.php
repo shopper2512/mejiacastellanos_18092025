@@ -1,4 +1,4 @@
-<?php 
+<?php
 require("classes/conn.class.php");
 require("classes/validaciones.inc.php");
 
@@ -9,78 +9,82 @@ class Estudiante{
     public $idgenero;
     public $conexion;
     public $validacion;
-
-    public function __contruct(){
+    
+    public function __construct(){
         $this->conexion = new DB();
-        $this->validacion = validaciones(); 
+        $this->validacion = new Validaciones();
     }
 
-    public function setIdEstudiantes($idestudiante){
-        $this->idestudiante = $idestudiante;
+    public function setIdEstudiante($idestudiante){
+        $this->idestudiante = idestudiante;
     }
 
     public function getIdEstudiante(){
-        return $this->IdEstudiante; 
+        return $this->idestudiante;
     }
 
-     public function setFechaNacimiento($fechanacimiento){
-        $this->fechanacimiento = $fechanacimiento;
+    public function setFechaNacimiento($fechanacimiento){
+        $this->fechanacimiento = fechanacimiento;
     }
-    
+
     public function getFechaNacimiento(){
-        return $this->fechanacimiento; 
-    }
-
-       public function setEstadoRegistroEstudiante($estadoregistroestudiante){
-        $this->estadoregistroestudiante = $estadoregistroestudiante;
+        return $this->fechanacimiento;
     }
     
-    public function getEstadoRegistroEstudiante($estadoregistroestudiante){
-        return $this->$estadoregistroestudiante; 
+    public function setEstadoRegistroEstudiante($estadoregistroestudiante){
+        $this->estadoregistroestudiante = estadoregistroestudiante;
     }
 
-         public function setIdGenero($idgenero){
-        $this->idgenero = $idgenero;
+    public function getEstadoRegistroEstudiante(){
+        return $this->estadoregistroestudiante;
     }
     
-    public function getIdGenero($idgenero){
-        return $this->$idgenero; 
+    public function setIdGenero($idgenero){
+        $this->idgenero = idgenero;
     }
 
+    public function getIdGenero(){
+        return $this->idgenero;
+    }
+
+
+    //METODO PARA OBTENER TODOS LOS ESTUDIANTES
     public function obtenerEstudiantes(){
         $resultado = $this->conexion->run('SELECT * FROM estudiante;');
-        $array = array("mensaje"=>"registro encontrado","data"=>$resultado->fetchALL());
+        $array = array("mensaje"=>"Registros encontrados","data"=>$resultado->fetchAll());
         return $array;
     }
 
+    //METODO PARA OBTENER UN ESTUDIANTE
     public function obtenerEstudiante(int $idestudiante){
         if($idestudiante > 0){
-            $resultado = $this->run('SELECT * FROM estudiante WHERE  id_estudiante='.$idestudiante);
-            $array = array("mensaje"=>"registro encontrados","data"=>$resultado->fetch());
+            $resultado = $this->conexion->run('SELECT * FROM estudiante WHERE id_estudiante='.$idestudiante);
+            $array = array("mensaje"=>"Registros encontrados","data"=>$resultado->fetch());
             return $array;
         }else{
-            $array = array("mensaje"=>"Registro NO encontrados, identificador incorrecto","data"=>"");
+            $array = array("mensaje"=>"Registros NO encontrados, identificador incorrecto","data"=>"");
+            return $array;
         }
     }
 
-    public function nuevoEstudiante($fechanacimiento,$idestudiante){
+    public function nuevoEstudiante($fechanacimiento,$idgenero){
         if(!empty($idgenero) && !empty($fechanacimiento)){
             $parametros = array(
                 "fecha_nac" => $fechanacimiento,
                 "id_genero" => $idgenero
             );
 
-            $resultado = $this->conexion->run('INSERT INTO estudiante(fecha_nacimiento_estudiante,id_estudiante)VALUE(:fecha_nac,:id_genero);',$parametros);
-            if ($this->conexion->n > 0 and $this->conexion->id > 0){
+            $resultado = $this->conexion->run('INSERT INTO estudiante(fecha_nacimiento_estudiante,id_genero)VALUES(:fecha_nac,:id_genero);',$parametros);
+            if($this->conexion->n > 0 and $this->conexion->id > 0){
                 $resultado = $this->obtenerEstudiante($this->conexion->id);
-                $array = array("mensaje"=>"regsitros econtrados","data"=>$resultado["data"]);
+                $array = array("mensaje"=>"Registros encontrados","data"=>$resultado["data"]);
                 return $array;
             }else{
                 $array = array("mensaje"=>"hubo un problema al registrar el estudiante","data"=>"");
                 return $array;
             }
         }else{
-            $array = array("mensaje"=>"paremetros enviados vacios","data"=>"");
+            $array = array("mensaje"=>"Parámetros enviados vacíos","data"=>"");
             return $array;
         }
     }
